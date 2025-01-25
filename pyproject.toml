@@ -1,0 +1,14 @@
+[project]
+name = "autoclick-images"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "opencv-python>=4.11.0.86",
+    "pillow>=11.1.0",
+    "pyautogui>=0.9.54",
+    "pyscreeze>=1.0.1",
+    "python-dotenv>=1.0.1",
+    "typing>=3.10.0.0",
+]
