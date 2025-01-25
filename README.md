@@ -26,7 +26,8 @@ You can configure the script using the following environment variables:
 Example:
 
 ```sh
-export LOOP_DELAY=2
+export LOOP_IDLING_DELAY=30
+export CLICK_COOLDOWN=5
 export CONFIDENCE=0.8
 uv run ./main.py
 ```

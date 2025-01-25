@@ -7,8 +7,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 CONFIDENCE = float(os.getenv("CONFIDENCE", 0.8))
-LOOP_DELAY = int(os.getenv("LOOP_DELAY", 5))
-MAX_INACTIVITY = int(os.getenv("MAX_INACTIVITY", 30))
+LOOP_IDLING_DELAY = int(os.getenv("LOOP_IDLING_DELAY", 30))
+CLICK_COOLDOWN = int(os.getenv("CLICK_COOLDOWN", 5))
 
 
 def get_image_files(directory: str = "./images") -> Tuple[List, List]:
@@ -48,6 +48,7 @@ def find_and_click(
             print(f"Found {image_path} at {location}. Clicking...")
             pyautogui.click(location)
             pyautogui.moveTo(location.x + move_x, location.y + move_y)
+            time.sleep(CLICK_COOLDOWN)
             return True
         else:
             return False
@@ -75,7 +76,7 @@ def main() -> None:
                 for file in numbered_files:
                     if find_and_click(file):
                         last_action_time = time.time()
-                    if time.time() - last_action_time > MAX_INACTIVITY:
+                    if time.time() - last_action_time > LOOP_IDLING_DELAY:
                         restart_required = True
                         break
             else:
@@ -88,13 +89,14 @@ def main() -> None:
                 for file in other_files:
                     if find_and_click(file):
                         last_action_time = time.time()
-                    if time.time() - last_action_time > MAX_INACTIVITY:
+                    if time.time() - last_action_time > LOOP_IDLING_DELAY:
                         restart_required = True
                         break
 
             if restart_required:
-                print(f"No activity for {MAX_INACTIVITY} seconds, restarting loop...")
-                time.sleep(LOOP_DELAY)
+                print(
+                    f"No activity for {LOOP_IDLING_DELAY} seconds, restarting loop..."
+                )
 
     except KeyboardInterrupt:
         print("Script stopped by user.")
